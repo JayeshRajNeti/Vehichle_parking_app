@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    <!-- {%  with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        {% endif %}
+    {% endwith %} -->
+<form action="#" method="post">
+    <div class="container">
+        <label for="email"><b>Email</b></label>
+        <input type="text" placeholder="Enter Email" name="email" value="{{email if email}}" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" name="pwd" required>
+
+        <button type="submit" value = "login">Login</button>
+        <!-- <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+        </label> -->
+    </div>
+
+    <div class="container" style="background-color:#f1f1f1">
+        <button type="button" class="cancelbtn">Cancel</button>
+        <span class="psw"><a href="/register">Create Account</a></span>
+    </div>
+</form> 
+{% endblock %}

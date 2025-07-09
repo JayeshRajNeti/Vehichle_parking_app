@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}User Dashboard{% endblock %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="navdiv">
+        <ul>
+            <li><a href="">Home</a></li>
+            <li><a href="">Summary</a></li>
+            <li><a href="/logout">Logout</a></li>
+            <li><a href="">Edit Profile</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="dashboard-content">
+    <h1>Welcome, {{usrname}}</h1>
+    <p>This is your user dashboard. Use the navigation bar to explore your options.</p>
+</div>
+{% endblock %}
