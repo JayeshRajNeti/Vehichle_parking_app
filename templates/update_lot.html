@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Update Parking Lot{% endblock %}
+
+{% block content %}
+<h2>Update Parking Lot</h2>
+<form method="POST" action="{{ url_for('update_lot', lotid=lot.lotid) }}">
+    <label for="location">Location:</label><br>
+    <input type="text" id="location" name="location" value="{{ lot.location }}" required><br><br>
+
+    <label for="address">Address:</label><br>
+    <input type="text" id="address" name="address" value="{{ lot.address }}" required><br><br>
+
+    <label for="pincode">Pincode:</label><br>
+    <input type="text" id="pincode" name="pincode" value="{{ lot.pincode }}" required><br><br>
+
+    <label for="price">Price:</label><br>
+    <input type="number" id="price" name="price" value="{{ lot.price }}" required><br><br>
+
+    <label for="spots">Spots:</label><br>
+    <input type="number" id="spots" name="spots" value="{{ lot.spots }}" required><br><br>
+
+    <input type="submit" value="Update">
+</form>
+<a href="{{ url_for('admin') }}">Back to Admin Dashboard</a>
+{% endblock %}

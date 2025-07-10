@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Create Parking Lot{% endblock %}
+
+{% block content %}
+<h2>Create Parking Lot</h2>
+<form method="POST" action="{{ url_for('create_lot') }}">
+    <label for="location">Location:</label><br>
+    <input type="text" id="location" name="location" required><br><br>
+
+    <label for="address">Address:</label><br>
+    <input type="text" id="address" name="address" required><br><br>
+
+    <label for="pincode">Pincode:</label><br>
+    <input type="text" id="pincode" name="pincode" required><br><br>
+
+    <label for="price">Price:</label><br>
+    <input type="number" id="price" name="price" required><br><br>
+
+    <label for="spots">Spots:</label><br>
+    <input type="number" id="spots" name="spots" required><br><br>
+
+    <input type="submit" value="Create">
+</form>
+<a href="{{ url_for('admin') }}">Back to Admin Dashboard</a>
+{% endblock %}

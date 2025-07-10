@@ -40,13 +40,14 @@ class slots(db.Model):
     slotid = db.Column(db.Integer, primary_key=True)
     lotid = db.Column(db.Integer, db.ForeignKey('parkinglots.lotid'),nullable=False)
     userid = db.Column(db.Integer, db.ForeignKey('users.id'))
+    vehiclenum = db.Column(db.String(120))
     occupied = db.Column(db.Boolean, default = False)
     reservations = db.relationship('reservations', backref='slot', lazy=True)
 
-    def __init__(self, slotid, lotid, userid, occupied):
-        self.slotid = slotid
+    def __init__(self, lotid, userid, vehiclenum, occupied):
         self.lotid = lotid
         self.userid = userid
+        self.vehiclenum = vehiclenum
         self.occupied = occupied
 
 class reservations(db.Model):
