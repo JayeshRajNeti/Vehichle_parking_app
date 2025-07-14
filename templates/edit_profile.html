@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Profile{% endblock %}
+
+{% block content %}
+<h2>Edit Profile</h2>
+<form method="POST" action="{{ url_for('edit_profile', id=user.id) }}">
+    <div class="container">
+        <label for="email"><b>Change Email</b></label>
+        <input type="text" placeholder="Enter Email" name="email" value="{{ user.email }}" required>
+
+        <label for="psw"><b>Enter a new Password</b></label>
+        <input type="password" name="pwd" value="" required>
+
+        <label for="fname"><b>Change Full Name</b></label>
+        <input type="text" name="fname" value="{{ user.fname }}" required>
+
+        <label for="address"><b>Change Address</b></label>
+        <input type="text" name="addr" value="{{ user.addr }}" required>
+
+        <label for="pcode"><b>Change Pin Code</b></label>
+        <input type="text" name="pcode" value="{{ user.pcode }}" required>
+
+        <button type="submit" value="update">Update Profile</button>
+    </div>
+</form>
+<a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+{% endblock %}

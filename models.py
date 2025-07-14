@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+# data for all the soulless users
 class users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -20,6 +21,7 @@ class users(db.Model):
         self.pcode = pcode
         self.isadmin = isadmin
 
+# database for expensive parking lots
 class parkinglots(db.Model):
     lotid = db.Column(db.Integer, primary_key=True)
     location = db.Column(db.String(120), nullable=False)
@@ -36,6 +38,7 @@ class parkinglots(db.Model):
         self.price = price
         self.spots = spots
 
+# database to hold the available slots for said parking lots
 class slots(db.Model):
     slotid = db.Column(db.Integer, primary_key=True)
     lotid = db.Column(db.Integer, db.ForeignKey('parkinglots.lotid'),nullable=False)
@@ -50,6 +53,7 @@ class slots(db.Model):
         self.vehiclenum = vehiclenum
         self.occupied = occupied
 
+# database to store reservations made by user
 class reservations(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     slotid = db.Column(db.Integer, db.ForeignKey('slots.slotid'), nullable=False)

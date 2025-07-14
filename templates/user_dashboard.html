@@ -8,13 +8,88 @@
         <ul>
             <li><a href="">Home</a></li>
             <li><a href="">Summary</a></li>
-            <li><a href="/logout">Logout</a></li>
-            <li><a href="">Edit Profile</a></li>
+            <li><a href="{{ url_for('logout') }}">Logout</a></li>
+            <li><a href="{{ url_for('edit_profile', id=user.id) }}">Edit Profile</a></li>
         </ul>
     </div>
 </nav>
 <div class="dashboard-content">
-    <h1>Welcome, {{usrname}}</h1>
-    <p>This is your user dashboard. Use the navigation bar to explore your options.</p>
+    <h1>Welcome, {{ usrname }}</h1>
+
+    <h2>Your Current Reservations</h2>
+    {% if user_reservations %}
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Address</th>
+                <th>Pincode</th>
+                <th>Price</th>
+                <th>Vehicle Number</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for res in user_reservations %}
+            <tr>
+                <td>{{ res.location }}</td>
+                <td>{{ res.address }}</td>
+                <td>{{ res.pincode }}</td>
+                <td>{{ res.price }}</td>
+                <td>{{ res.vehiclenum }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('release_reservation') }}" onsubmit="return confirm('Are you sure you want to release this reservation?');">
+                        <input type="hidden" name="reservation_id" value="{{ res.reservation_id }}">
+                        <button type="submit">Release</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>You have no active reservations.</p>
+    {% endif %}
+
+    <h2>Available Parking Lots</h2>
+    <form method="GET" action="{{ url_for('dashboard') }}">
+        <input type="text" name="search" placeholder="Search by location" value="{{ search_query }}">
+        <input type="submit" value="Search">
+    </form>
+
+    {% if available_lots %}
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>Location</th>
+                <th>Address</th>
+                <th>Pincode</th>
+                <th>Price</th>
+                <th>Available Slots</th>
+                <th>Book</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for lot in available_lots %}
+            <tr>
+                <td>{{ lot.location }}</td>
+                <td>{{ lot.address }}</td>
+                <td>{{ lot.pincode }}</td>
+                <td>{{ lot.price }}</td>
+                <td>{{ lot.available_slots }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('book_lot') }}">
+                        <input type="hidden" name="lotid" value="{{ lot.lotid }}">
+                        <input type="text" name="vehiclenum" placeholder="Vehicle Number" required>
+                        <button type="submit">Book</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No available parking lots found.</p>
+    {% endif %}
 </div>
 {% endblock %}
