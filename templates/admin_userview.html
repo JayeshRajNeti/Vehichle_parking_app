@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+{% if all_users %}
+
+<nav class="navbar">
+    <div class="navdiv">
+        <ul>
+            <li><a href="{{ url_for('admin.admin_dashboard') }}">Home</a></li>
+            <li><a href="{{ url_for('admin.admin_userview') }}">Users</a></li>
+            <li><a href="{{ url_for('admin.admin_summary') }}">Summary</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="dashboard-content">
+    <form method="GET" action="{{ url_for('admin.admin_userview') }}">
+        <input type="text" name="search" placeholder="Search by name" value="{{ search_query }}">
+        <input type="submit" value="Search">
+    </form>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead> 
+            <tr>
+                <th>Id</th>
+                <th>Email</th>
+                <th>Full Name</th>
+                <th>Address</th>
+                <th>Pin Code</th>
+                <th>User Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in all_users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.fname }}</td>
+                <td>{{ user.addr }}</td>
+                <td>{{ user.pcode }}</td>
+                {% if user.isadmin %}
+                <td>Admin</td>
+                {% else %}
+                <td>User</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No users registered</p>
+    {% endif %}
+</div>
+{% endblock %}

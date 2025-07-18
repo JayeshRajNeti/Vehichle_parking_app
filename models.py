@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-
+from sqlalchemy import func
 db = SQLAlchemy()
 
 # data for all the soulless users

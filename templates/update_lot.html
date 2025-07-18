@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>Update Parking Lot</h2>
-<form method="POST" action="{{ url_for('update_lot', lotid=lot.lotid) }}">
+<form method="POST" action="{{ url_for('admin.update_lot', lotid=lot.lotid) }}">
     <label for="location">Location:</label><br>
     <input type="text" id="location" name="location" value="{{ lot.location }}" required><br><br>
 
@@ -22,5 +22,5 @@
 
     <input type="submit" value="Update">
 </form>
-<a href="{{ url_for('admin') }}">Back to Admin Dashboard</a>
+<a href="{{ url_for('admin.admin_dashboard') }}">Back to Admin Dashboard</a>
 {% endblock %}

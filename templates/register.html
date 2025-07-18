@@ -28,7 +28,7 @@
 
     <div class="container" style="background-color:#f1f1f1">
         <button type="button" class="cancelbtn">Cancel</button>
-        <span class="psw"><a href="/login">login here</a></span>
+        <span class="psw"><a href="{{ url_for('auth.login') }}">login here</a></span>
     </div>
 </form> 
 {% endblock %}

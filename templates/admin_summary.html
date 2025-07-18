@@ -1,0 +1,173 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Summary{% endblock %}
+
+{% block content %}
+<nav class="navbar">
+    <div class="navdiv">
+        <ul>
+            <li><a href="{{ url_for('admin.admin_dashboard') }}">Home</a></li>
+            <li><a href="{{ url_for('admin.admin_userview') }}">Users</a></li>
+            <li><a href="{{ url_for('admin.admin_summary') }}">Summary</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div class="dashboard-content">
+    <h1>Admin Summary</h1>
+
+    <div style="display: flex; gap: 40px; flex-wrap: wrap;">
+        <div>
+            <h2>Lot Profits (Pie Chart)</h2>
+            <canvas id="lotProfitsChart" width="400" height="400"></canvas>
+        </div>
+
+        <div>
+            <h2>Slots Used (Bar Chart)</h2>
+            <canvas id="slotsUsedChart" width="600" height="400"></canvas>
+
+            <button id="toggleWeightageBtn" style="margin-top: 20px; padding: 8px 12px; cursor: pointer;">Toggle Weightage Table</button>
+
+            <div id="weightageTableContainer" style="display:none; margin-top: 10px;">
+                <h3>Weightage of Each Lot in Occupied Category</h3>
+                <table border="1" cellpadding="5" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Location</th>
+                            <th>Weightage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for location, weightage in occupied_dist %}
+                        <tr>
+                            <td>{{ location }}</td>
+                            <td>{{ weightage }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // loading data for a profit per hour pie chart
+    const lotProfitsLabels = [
+        {% for location, total_price in lot_profits %}
+            "{{ location }}"{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+    const lotProfitsData = [
+        {% for location, total_price in lot_profits %}
+            {{ total_price }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const ctxLotProfits = document.getElementById('lotProfitsChart').getContext('2d');
+    const lotProfitsChart = new Chart(ctxLotProfits, {
+        type: 'pie',
+        data: {
+            labels: lotProfitsLabels,
+            datasets: [{
+                label: 'Lot Profits',
+                data: lotProfitsData,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.6)',
+                    'rgba(54, 162, 235, 0.6)',
+                    'rgba(255, 206, 86, 0.6)',
+                    'rgba(75, 192, 192, 0.6)',
+                    'rgba(153, 102, 255, 0.6)',
+                    'rgba(255, 159, 64, 0.6)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                },
+                title: {
+                    display: true,
+                    text: 'Lot Profits Distribution'
+                }
+            }
+        }
+    });
+
+    // loading data for a occupied vs vacent bar chart
+    const slotsUsedLabels = [
+        {% for occupied, count in slots_used %}
+            {{ 'true' if occupied else 'false' }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+    const slotsUsedData = [
+        {% for occupied, count in slots_used %}
+            {{ count }}{% if not loop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    const ctxSlotsUsed = document.getElementById('slotsUsedChart').getContext('2d');
+    const slotsUsedChart = new Chart(ctxSlotsUsed, {
+        type: 'bar',
+        data: {
+            labels: slotsUsedLabels.map(label => label === 'true' ? 'Occupied' : 'Unoccupied'),
+            datasets: [{
+                label: 'Slots Used',
+                data: slotsUsedData,
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 99, 132, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 99, 132, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Slots Usage'
+                },
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+
+    // toggling weightage table visibility
+    const toggleBtn = document.getElementById('toggleWeightageBtn');
+    const weightageTable = document.getElementById('weightageTableContainer');
+
+    toggleBtn.addEventListener('click', () => {
+        if (weightageTable.style.display === 'none') {
+            weightageTable.style.display = 'block';
+        } else {
+            weightageTable.style.display = 'none';
+        }
+    });
+</script>
+{% endblock %}

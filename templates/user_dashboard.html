@@ -6,10 +6,10 @@
 <nav class="navbar">
     <div class="navdiv">
         <ul>
-            <li><a href="">Home</a></li>
-            <li><a href="">Summary</a></li>
-            <li><a href="{{ url_for('logout') }}">Logout</a></li>
-            <li><a href="{{ url_for('edit_profile', id=user.id) }}">Edit Profile</a></li>
+            <li><a href="{{ url_for('user.dashboard') }}">Home</a></li>
+            <li><a href="{{ url_for('user.user_summary', id=user.id) }}">Summary</a></li>
+            <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
+            <li><a href="{{ url_for('user.edit_profile', id=user.id) }}">Edit Profile</a></li>
         </ul>
     </div>
 </nav>
@@ -38,7 +38,7 @@
                 <td>{{ res.price }}</td>
                 <td>{{ res.vehiclenum }}</td>
                 <td>
-                    <form method="POST" action="{{ url_for('release_reservation') }}" onsubmit="return confirm('Are you sure you want to release this reservation?');">
+                    <form method="POST" action="{{ url_for('user.release_reservation') }}" onsubmit="return confirm('Are you sure you want to release this reservation?');">
                         <input type="hidden" name="reservation_id" value="{{ res.reservation_id }}">
                         <button type="submit">Release</button>
                     </form>
@@ -52,7 +52,7 @@
     {% endif %}
 
     <h2>Available Parking Lots</h2>
-    <form method="GET" action="{{ url_for('dashboard') }}">
+    <form method="GET" action="{{ url_for('user.dashboard') }}">
         <input type="text" name="search" placeholder="Search by location" value="{{ search_query }}">
         <input type="submit" value="Search">
     </form>
@@ -78,7 +78,7 @@
                 <td>{{ lot.price }}</td>
                 <td>{{ lot.available_slots }}</td>
                 <td>
-                    <form method="POST" action="{{ url_for('book_lot') }}">
+                    <form method="POST" action="{{ url_for('user.book_lot') }}">
                         <input type="hidden" name="lotid" value="{{ lot.lotid }}">
                         <input type="text" name="vehiclenum" placeholder="Vehicle Number" required>
                         <button type="submit">Book</button>

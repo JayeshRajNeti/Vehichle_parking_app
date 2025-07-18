@@ -4,7 +4,7 @@
 
 {% block content %}
 <h2>Create Parking Lot</h2>
-<form method="POST" action="{{ url_for('create_lot') }}">
+<form method="POST" action="{{ url_for('admin.create_lot') }}">
     <label for="location">Location:</label><br>
     <input type="text" id="location" name="location" required><br><br>
 
@@ -22,5 +22,5 @@
 
     <input type="submit" value="Create">
 </form>
-<a href="{{ url_for('admin') }}">Back to Admin Dashboard</a>
+<a href="{{ url_for('admin.admin_dashboard') }}">Back to Admin Dashboard</a>
 {% endblock %}
